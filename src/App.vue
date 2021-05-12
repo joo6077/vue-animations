@@ -4,7 +4,11 @@
     <router-link to="/about">About</router-link> | 
     <router-link to="/contact">Contact</router-link>
   </div>
-  <router-view/>
+  <router-view v-slot="{ Component }">
+    <transition name="route" mode="out-in">
+      <component :is="Component"></component>
+    </transition>
+  </router-view>
 </template>
 
 <style>

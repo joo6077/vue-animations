@@ -2,15 +2,11 @@
   <div class="about">
     <transition
       appear
-      name="fade"
       @before-enter="beforeEnter"
       @enter="enter"
       @after-enter="afterEnter"
-      @before-leave="beforeLeave"
-      @leave="leave"
-      @after-leave="afterLeave"
     >
-      <h1 v-if="showTitle">About</h1>
+      <h1>About</h1>
     </transition>
     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum aperiam officia possimus delectus inventore quod quisquam culpa voluptas iusto, quae maiores quo dolorum, corporis laboriosam a dolore consequatur assumenda nam!</p>
     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum aperiam officia possimus delectus inventore quod quisquam culpa voluptas iusto, quae maiores quo dolorum, corporis laboriosam a dolore consequatur assumenda nam!</p>
@@ -19,34 +15,61 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import gsap from 'gsap';
 
 export default {
   setup() {
-    const showTitle = ref(true)
-    
     const beforeEnter = (el) => {
-      console.log('before enter', el);
+      console.log('before enter - set initial state');
+      el.style.transform = 'translateY(-60px)'
+      el.style.opacity = 0
     }
-    const enter = (el) => {
-      console.log('enter', el);
+    const enter = (el, done) => {
+      console.log('starting to enter - make transition');
+      gsap.to(el, {
+        duration: 1,
+        y: 0,
+        opacity: 1,
+        ease: 'bounce.out',
+        onComlete: done
+      })
     }
-    const afterEnter = (el) => {
-      console.log('after enter', el);
-      setTimeout(() => {
-        showTitle.value = false
-      }, 2000);
+    const afterEnter = () => {
+      console.log('after enter');
+
     }
-    const beforeLeave = (el) => {
-      console.log('before leave', el);
+    // const showTitle = ref(true)
+    
+    // const beforeEnter = (el) => {
+    //   console.log('before enter', el);
+    // }
+    // const enter = (el) => {
+    //   console.log('enter', el);
+    // }
+    // const afterEnter = (el) => {
+    //   console.log('after enter', el);
+    //   setTimeout(() => {
+    //     showTitle.value = false
+    //   }, 2000);
+    // }
+    // const beforeLeave = (el) => {
+    //   console.log('before leave', el);
+    // }
+    // const leave = (el) => {
+    //   console.log('leave', el);
+    // }
+    // const afterLeave = (el) => {
+    //   console.log('after leave', el);
+    // }
+    return { 
+      beforeEnter, 
+      enter, 
+      afterEnter, 
+      // showTitle, 
+      // beforeLeave, 
+      // leave, 
+      // afterLeave 
     }
-    const leave = (el) => {
-      console.log('leave', el);
-    }
-    const afterLeave = (el) => {
-      console.log('after leave', el);
-    }
-    return { beforeEnter, enter, afterEnter, showTitle, beforeLeave, leave, afterLeave }
   }
 }
 </script>
@@ -57,12 +80,12 @@ export default {
     margin: 20px auto;
   }
 
-  .fade-enter-from,
+  /* .fade-enter-from,
   .fade-leave-to {
     opacity: 0;
   }
   .fade-enter-active,
   .fade-leave-active {
     transition: opacity 3s ease;
-  }
+  } */
 </style>
